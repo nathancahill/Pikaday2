@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <title>Pikaday</title>
+    <meta name="author" content="David Bushell">
+    <link rel="stylesheet" href="css/pikaday.css">
+    <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+    <h1>Pikaday 2</h1>
+
+    <p class="large">A refreshing JavaScript Datepicker — lightweight, no dependencies, modular CSS.</p>
+
+    <p><a href="https://github.com/nathancahill/Pikaday2"><strong>Pikaday source on GitHub</strong></a></p>
+
+    <label for="datepicker">Date:</label>
+    <br>
+    <input type="text" id="datepicker">
+
+    <h2>What is this?</h2>
+
+    <p>Since version 1.0 Pikaday is a stable and battle tested date-picker. Feel free to use it however you like but please report any bugs or feature requests to the <a href="https://github.com/nathancahill/Pikaday2/issues">GitHub issue tracker</a>, thanks!</p>
+
+    <p class="small">
+    Copyright &copy; 2014 <a href="http://dbushell.com/">David Bushell</a> | BSD &amp; MIT license<br>
+    Copyright &copy; 2015 <a href="http://github.com/nathancahill/">Nathan Cahill</a> | BSD &amp; MIT license
+    </p>
+
+    <script src="dist/pikaday2.min.js"></script>
+    <script>
+
+    var picker = new Pikaday2({
+        field: document.getElementById('datepicker'),
+        firstDay: 1,
+        minDate: new Date(2000, 0, 1),
+        maxDate: new Date(2020, 12, 31),
+        yearRange: [2000,2020]
+    });
+
+    </script>
+</body>
+</html>

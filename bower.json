@@ -1,0 +1,29 @@
+{
+  "name": "pikaday2",
+  "version": "1.3.4",
+  "description": "A refreshing JavaScript Datepicker — lightweight, no dependencies, modular CSS",
+  "keywords": [
+    "datepicker",
+    "calendar",
+    "date"
+  ],
+  "main": [
+    "./pikaday.js",
+    "./css/pikaday.css"
+  ],
+  "dependencies": {},
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
+  "license" : [
+    "BSD",
+    "MIT"
+  ],
+  "homepage": "http://nathancahill.github.io/Pikaday2/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nathancahill/Pikaday2.git"
+  }
+}
