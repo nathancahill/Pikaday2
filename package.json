@@ -51,7 +51,7 @@
   },
   "scripts": {
     "build": "npm run build-src && npm run build-dist",
-    "build-src": "(echo '(function() {'; babel --modules ignore src/utils.js; babel --modules ignore src/events.js; babel --modules ignore src/classutils.js; babel --modules ignore src/dateutils.js; babel --modules ignore src/templating.js; babel --stage 0 --modules ignore src/pikaday2.js; echo 'window.Pikaday2 = Pikaday2; }())') > dist/pikaday2.js",
+    "build-src": "(echo '(function() {'; babel --modules ignore src/lib/utils.js; babel --modules ignore src/lib/events.js; babel --modules ignore src/lib/classutils.js; babel --modules ignore src/lib/dateutils.js; babel --modules ignore src/lib/templating.js; babel --stage 0 --modules ignore src/pikaday2.js; echo 'window.Pikaday2 = Pikaday2; }())') > dist/pikaday2.js",
     "build-dist": "grunt uglify"
   }
 }

@@ -1,9 +1,9 @@
 
-import { isDate, isArray, extend } from './utils'
-import { addEvent, removeEvent, fireEvent, hasEventListeners } from './events'
-import { addClass, removeClass, hasClass } from './classutils'
-import { isWeekend, isLeapYear, getDaysInMonth, setToStartOfDay, compareDates, adjustCalendar } from './dateutils'
-import { renderDay, renderWeek, renderRow, renderTitle, renderTable } from './templating'
+import { isDate, isArray, extend } from './lib/utils'
+import { addEvent, removeEvent, fireEvent, hasEventListeners } from './lib/events'
+import { addClass, removeClass, hasClass } from './lib/classutils'
+import { isWeekend, isLeapYear, getDaysInMonth, setToStartOfDay, compareDates, adjustCalendar } from './lib/dateutils'
+import { renderDay, renderWeek, renderRow, renderTitle, renderTable } from './lib/templating'
 
 const hasMoment = typeof moment === 'function';
 
