@@ -1,5 +1,7 @@
 ## Pikaday 2
 
+[![File Size](https://badge-size.herokuapp.com/nathancahill/Pikaday2/master/dist/pikaday2.min.js.svg?compression=gzip&label=size)](https://raw.githubusercontent.com/nathancahill/Pikaday2/master/dist/pikaday2.min.js)
+
 A fork of Pikaday, the refreshing JavaScript Datepicker.
 
 ### Fork Goals
