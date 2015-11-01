@@ -3,7 +3,12 @@ import { extend } from './utils'
 
 export const hasEventListeners = !!window.addEventListener;
 
-
+/**
+ * @param  {DOM element} el - DOM element to add event to
+ * @param  {string} e - Event to add
+ * @param  {function} callback - Callback
+ * @param  {boolean} capture - Whether to capture the event
+ */
 export var addEvent = (el, e, callback, capture) => {
     if (hasEventListeners) {
         el.addEventListener(e, callback, !!capture);
@@ -12,6 +17,12 @@ export var addEvent = (el, e, callback, capture) => {
     }
 }
 
+/**
+ * @param  {DOM element} el - DOM element to add event to
+ * @param  {string} e - Event to add
+ * @param  {function} callback - Callback
+ * @param  {boolean} capture - Whether to capture the event
+ */
 export var removeEvent = (el, e, callback, capture) => {
     if (hasEventListeners) {
         el.removeEventListener(e, callback, !!capture);
@@ -20,6 +31,11 @@ export var removeEvent = (el, e, callback, capture) => {
     }
 }
 
+/**
+ * @param  {DOM element} el - DOM element to fire event on
+ * @param  {string} eventName - Event to fire
+ * @param  {hash} data - Data to fire event with
+ */
 export var fireEvent = (el, eventName, data) => {
     let ev;
 

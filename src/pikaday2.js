@@ -311,7 +311,7 @@ export default class Pikaday2 {
         }
 
         for (let c = 0; c < opts.numberOfMonths; c++) {
-            html += '<div class="pika-lendar">' + renderTitle(this, c, this.calendars[c].year, this.calendars[c].month, this.calendars[0].year) + this.render(this.calendars[c].year, this.calendars[c].month) + '</div>';
+            html += '<div class="pika-lendar">' + renderTitle(opts, c, this.calendars[c].year, this.calendars[c].month, this.calendars[0].year) + this.render(this.calendars[c].year, this.calendars[c].month) + '</div>';
         }
 
         this.el.innerHTML = html;

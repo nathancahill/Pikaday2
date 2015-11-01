@@ -321,7 +321,7 @@
 	        }
 
 	        for (var c = 0; c < opts.numberOfMonths; c++) {
-	            html += '<div class="pika-lendar">' + (0, _libTemplating.renderTitle)(_this, c, _this.calendars[c].year, _this.calendars[c].month, _this.calendars[0].year) + _this.render(_this.calendars[c].year, _this.calendars[c].month) + '</div>';
+	            html += '<div class="pika-lendar">' + (0, _libTemplating.renderTitle)(opts, c, _this.calendars[c].year, _this.calendars[c].month, _this.calendars[0].year) + _this.render(_this.calendars[c].year, _this.calendars[c].month) + '</div>';
 	        }
 
 	        _this.el.innerHTML = html;
@@ -813,6 +813,11 @@
 /* 2 */
 /***/ function(module, exports) {
 
+	
+	/**
+	 * @param  {object} obj - Object to test
+	 * @return {boolean}
+	 */
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
@@ -824,12 +829,23 @@
 	};
 
 	exports.isArray = isArray;
+	/**
+	 * @param  {object} obj - Object to test
+	 * @return {boolean}
+	 */
 	var isDate = function isDate(obj) {
 	    return (/Date/.test(Object.prototype.toString.call(obj)) && !isNaN(obj.getTime())
 	    );
 	};
 
 	exports.isDate = isDate;
+	/**
+	 * 
+	 * @param  {object} to - Object to extend
+	 * @param  {object} from - Object to extend from
+	 * @param  {boolean} overwrite - Should overrwrite existing keys
+	 * @return {object}
+	 */
 	var extend = function extend(to, from, overwrite) {
 	    var prop = undefined,
 	        hasProp = undefined;
@@ -871,6 +887,12 @@
 	var hasEventListeners = !!window.addEventListener;
 
 	exports.hasEventListeners = hasEventListeners;
+	/**
+	 * @param  {DOM element} el - DOM element to add event to
+	 * @param  {string} e - Event to add
+	 * @param  {function} callback - Callback
+	 * @param  {boolean} capture - Whether to capture the event
+	 */
 	var addEvent = function addEvent(el, e, callback, capture) {
 	    if (hasEventListeners) {
 	        el.addEventListener(e, callback, !!capture);
@@ -880,6 +902,12 @@
 	};
 
 	exports.addEvent = addEvent;
+	/**
+	 * @param  {DOM element} el - DOM element to add event to
+	 * @param  {string} e - Event to add
+	 * @param  {function} callback - Callback
+	 * @param  {boolean} capture - Whether to capture the event
+	 */
 	var removeEvent = function removeEvent(el, e, callback, capture) {
 	    if (hasEventListeners) {
 	        el.removeEventListener(e, callback, !!capture);
@@ -889,6 +917,11 @@
 	};
 
 	exports.removeEvent = removeEvent;
+	/**
+	 * @param  {DOM element} el - DOM element to fire event on
+	 * @param  {string} eventName - Event to fire
+	 * @param  {hash} data - Data to fire event with
+	 */
 	var fireEvent = function fireEvent(el, eventName, data) {
 	    var ev = undefined;
 
@@ -909,21 +942,37 @@
 /* 4 */
 /***/ function(module, exports) {
 
+	
+	/**
+	 * Trim whitespace from start or end of string
+	 * @param   {string} str - The string to trim
+	 * @returns {string}
+	 */
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
 	    value: true
 	});
-
 	var trim = function trim(str) {
 	    return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
 	};
 
+	/**
+	 * Check if a class is present in an element
+	 * @param   {DOM element} el - The DOM element to check
+	 * @param   {string} cn - The class to check for
+	 * @returns {boolean}
+	 */
 	var hasClass = function hasClass(el, cn) {
 	    return (' ' + el.className + ' ').indexOf(' ' + cn + ' ') !== -1;
 	};
 
 	exports.hasClass = hasClass;
+	/**
+	 * Add a class to an element if it does not already exist
+	 * @param  {DOM element} el - The DOM element to add the class to
+	 * @param  {string} cn - The class to add
+	 */
 	var addClass = function addClass(el, cn) {
 	    if (!hasClass(el, cn)) {
 	        el.className = el.className === '' ? cn : el.className + ' ' + cn;
@@ -931,6 +980,11 @@
 	};
 
 	exports.addClass = addClass;
+	/**
+	 * Remove a class from an element
+	 * @param  {DOM element} el - The DOM element to remove the class from
+	 * @param  {string} cn - The class to remove
+	 */
 	var removeClass = function removeClass(el, cn) {
 	    el.className = trim((' ' + el.className + ' ').replace(' ' + cn + ' ', ' '));
 	};
@@ -948,6 +1002,11 @@
 
 	var _utils = __webpack_require__(2);
 
+	/**
+	 * Returns true if date is a weekend day, false if not
+	 * @param  {date} date - Date to check
+	 * @return {boolean}
+	 */
 	var isWeekend = function isWeekend(date) {
 	    var day = date.getDay();
 
@@ -955,28 +1014,54 @@
 	};
 
 	exports.isWeekend = isWeekend;
+	/**
+	 * Returns true if year is a leap year, false if not
+	 * @param  {number} year - Year to check
+	 * @return {boolean}
+	 *
+	 * Solution by Matti Virkkunen: http://stackoverflow.com/a/4881951
+	 */
 	var isLeapYear = function isLeapYear(year) {
-	    // solution by Matti Virkkunen: http://stackoverflow.com/a/4881951
 	    return year % 4 === 0 && year % 100 !== 0 || year % 400 === 0;
 	};
 
 	exports.isLeapYear = isLeapYear;
+	/**
+	 * Returns the number of days in a month accounting for leap years
+	 * @param  {number} year - Year to return number of days for
+	 * @param  {number} month - Month to return number of days for
+	 * @return {number}
+	 */
 	var getDaysInMonth = function getDaysInMonth(year, month) {
 	    return [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
 	};
 
 	exports.getDaysInMonth = getDaysInMonth;
+	/**
+	 * Sets a date's time to 0, 0, 0, 0 for comparing dates
+	 * @param  {date} date - Date to set time on
+	 */
 	var setToStartOfDay = function setToStartOfDay(date) {
 	    if ((0, _utils.isDate)(date)) date.setHours(0, 0, 0, 0);
 	};
 
 	exports.setToStartOfDay = setToStartOfDay;
+	/**
+	 * Weak date comparison (use setToStartOfDay(date) to ensure correct result)
+	 * @param  {date} a - Date to compare
+	 * @param  {date} b - Date to compare
+	 * @return {boolean}
+	 */
 	var compareDates = function compareDates(a, b) {
-	    // weak date comparison (use setToStartOfDay(date) to ensure correct result)
 	    return a.getTime() === b.getTime();
 	};
 
 	exports.compareDates = compareDates;
+	/**
+	 * Month/year wrapping
+	 * @param  {object} - Calendar to adjust
+	 * @return {object}
+	 */
 	var adjustCalendar = function adjustCalendar(calendar) {
 	    if (calendar.month < 0) {
 	        calendar.year -= Math.ceil(Math.abs(calendar.month) / 12);
@@ -1002,6 +1087,13 @@
 
 	var _utils = __webpack_require__(2);
 
+	/**
+	 * Returns i18n day name, either abbreviated or full
+	 * @param  {object} opts - Options
+	 * @param  {number} day - Day of the week
+	 * @param  {boolean} abbr
+	 * @return {string}
+	 */
 	var renderDayName = function renderDayName(opts, day, abbr) {
 	    day += opts.firstDay;
 
@@ -1012,6 +1104,11 @@
 	    return abbr ? opts.i18n.weekdaysShort[day] : opts.i18n.weekdays[day];
 	};
 
+	/**
+	 * Returns <td> HTML for a day table cell
+	 * @param  {object} opts - Options
+	 * @return {string}
+	 */
 	var renderDay = function renderDay(opts) {
 	    if (opts.isEmpty) {
 	        return '<td class="is-empty"></td>';
@@ -1047,8 +1144,16 @@
 	};
 
 	exports.renderDay = renderDay;
+	/**
+	 * Returns <td> HTML for a week cell
+	 * @param  {number}
+	 * @param  {number}
+	 * @param  {number}
+	 * @return {string}
+	 *
+	 * Lifted from http://javascript.about.com/library/blweekyear.htm
+	 */
 	var renderWeek = function renderWeek(d, m, y) {
-	    // Lifted from http://javascript.about.com/library/blweekyear.htm, lightly modified.
 	    var onejan = new Date(y, 0, 1),
 	        weekNum = Math.ceil(((new Date(y, m, d) - onejan) / 86400000 + onejan.getDay() + 1) / 7);
 
@@ -1056,15 +1161,22 @@
 	};
 
 	exports.renderWeek = renderWeek;
+	/**
+	 * Returns <tr> HTML for a day cells
+	 * @param  {string[]} days - Array of day strings
+	 * @param  {boolean} isRTL - Is right to left
+	 * @return {string}
+	 */
 	var renderRow = function renderRow(days, isRTL) {
 	    return '\n    <tr>\n        ' + (isRTL ? days.reverse() : days).join('') + '\n    </tr>\n';
 	};
 
 	exports.renderRow = renderRow;
-	var renderBody = function renderBody(rows) {
-	    return '\n    <tbody>\n        ' + rows.join('') + '\n    </tbody>\n';
-	};
-
+	/**
+	 * Returns the <thead> HTML for day names
+	 * @param  {object} opts - Options
+	 * @return {string}
+	 */
 	var renderHead = function renderHead(opts) {
 	    var i = undefined,
 	        arr = [];
@@ -1080,11 +1192,19 @@
 	    return '\n        <thead>\n            ' + (opts.isRTL ? arr.reverse() : arr).join('') + '\n        </thead>\n    ';
 	};
 
-	var renderTitle = function renderTitle(instance, c, year, month, refYear) {
+	/**
+	 * Returns HTML for the title with select labels for years and months
+	 * @param  {object} opts - Options
+	 * @param  {} c
+	 * @param  {number} year
+	 * @param  {number} month
+	 * @param  {number} refYear
+	 * @return {string}
+	 */
+	var renderTitle = function renderTitle(opts, c, year, month, refYear) {
 	    var i = undefined,
 	        j = undefined,
 	        arr = undefined,
-	        opts = instance.options,
 	        isMinYear = year === opts.minYear,
 	        isMaxYear = year === opts.maxYear,
 	        html = '<div class="pika-title">',
@@ -1133,7 +1253,7 @@
 	        html += '\n            <button class="pika-prev ' + (prev ? '' : ' is-disabled') + '" type="button">\n                ' + opts.i18n.previousMonth + '\n            </button>\n        ';
 	    }
 
-	    if (c === instance.options.numberOfMonths - 1) {
+	    if (c === opts.numberOfMonths - 1) {
 	        html += '\n            <button class="pika-next ' + (next ? '' : ' is-disabled') + '" type="button">\n                ' + opts.i18n.nextMonth + '\n            </button>\n        ';
 	    }
 
@@ -1141,8 +1261,14 @@
 	};
 
 	exports.renderTitle = renderTitle;
-	var renderTable = function renderTable(opts, data) {
-	    return '\n    <table cellpadding="0" cellspacing="0" class="pika-table">\n        ' + renderHead(opts) + '\n        ' + renderBody(data) + '\n    </table>\n';
+	/**
+	 * Returns <table> HTML with table rows
+	 * @param  {object} opts - Options
+	 * @param  {string[]} rows - Array of row HTML
+	 * @return {string}
+	 */
+	var renderTable = function renderTable(opts, rows) {
+	    return '\n    <table cellpadding="0" cellspacing="0" class="pika-table">\n        ' + renderHead(opts) + '\n        <tbody>\n            ' + rows.join('') + '\n        </tbody>\n    </table>\n';
 	};
 	exports.renderTable = renderTable;
 

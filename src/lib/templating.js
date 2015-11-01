@@ -1,7 +1,13 @@
 
 import { isArray } from './utils'
 
-
+/**
+ * Returns i18n day name, either abbreviated or full
+ * @param  {object} opts - Options
+ * @param  {number} day - Day of the week
+ * @param  {boolean} abbr
+ * @return {string}
+ */
 var renderDayName = (opts, day, abbr) => {
     day += opts.firstDay;
 
@@ -12,7 +18,12 @@ var renderDayName = (opts, day, abbr) => {
     return abbr ? opts.i18n.weekdaysShort[day] : opts.i18n.weekdays[day];
 }
 
-export var renderDay = (opts) => {
+/**
+ * Returns <td> HTML for a day table cell
+ * @param  {object} opts - Options
+ * @return {string}
+ */
+export var renderDay = opts => {
     if (opts.isEmpty) {
         return '<td class="is-empty"></td>';
     }
@@ -56,10 +67,18 @@ export var renderDay = (opts) => {
     `
 }
 
+/**
+ * Returns <td> HTML for a week cell
+ * @param  {number}
+ * @param  {number}
+ * @param  {number}
+ * @return {string}
+ *
+ * Lifted from http://javascript.about.com/library/blweekyear.htm
+ */
 export var renderWeek = (d, m, y) => {
-    // Lifted from http://javascript.about.com/library/blweekyear.htm, lightly modified.
     let onejan = new Date(y, 0, 1),
-        weekNum = Math.ceil((((new Date(y, m, d) - onejan) / 86400000) + onejan.getDay()+1)/7);
+        weekNum = Math.ceil((((new Date(y, m, d) - onejan) / 86400000) + onejan.getDay() + 1) / 7);
 
     return `
         <td class="pika-week">
@@ -68,18 +87,23 @@ export var renderWeek = (d, m, y) => {
     `
 }
 
+/**
+ * Returns <tr> HTML for a day cells
+ * @param  {string[]} days - Array of day strings
+ * @param  {boolean} isRTL - Is right to left
+ * @return {string}
+ */
 export var renderRow = (days, isRTL) => `
     <tr>
         ${ (isRTL ? days.reverse() : days).join('') }
     </tr>
 `
 
-var renderBody = rows => `
-    <tbody>
-        ${ rows.join('') }
-    </tbody>
-`
-
+/**
+ * Returns the <thead> HTML for day names
+ * @param  {object} opts - Options
+ * @return {string}
+ */
 var renderHead = (opts) => {
     let i, arr = [];
 
@@ -104,9 +128,17 @@ var renderHead = (opts) => {
     `
 }
 
-export var renderTitle = (instance, c, year, month, refYear) => {
+/**
+ * Returns HTML for the title with select labels for years and months
+ * @param  {object} opts - Options
+ * @param  {} c
+ * @param  {number} year
+ * @param  {number} month
+ * @param  {number} refYear
+ * @return {string}
+ */
+export var renderTitle = (opts, c, year, month, refYear) => {
     let i, j, arr,
-        opts = instance.options,
         isMinYear = year === opts.minYear,
         isMaxYear = year === opts.maxYear,
         html = '<div class="pika-title">',
@@ -182,7 +214,7 @@ export var renderTitle = (instance, c, year, month, refYear) => {
         `
     }
 
-    if (c === (instance.options.numberOfMonths - 1) ) {
+    if (c === (opts.numberOfMonths - 1) ) {
         html += `
             <button class="pika-next ${ (next ? '' : ' is-disabled') }" type="button">
                 ${ opts.i18n.nextMonth }
@@ -193,9 +225,17 @@ export var renderTitle = (instance, c, year, month, refYear) => {
     return html += '</div>';
 }
 
-export var renderTable = (opts, data) => `
+/**
+ * Returns <table> HTML with table rows
+ * @param  {object} opts - Options
+ * @param  {string[]} rows - Array of row HTML
+ * @return {string}
+ */
+export var renderTable = (opts, rows) => `
     <table cellpadding="0" cellspacing="0" class="pika-table">
         ${ renderHead(opts) }
-        ${ renderBody(data) }
+        <tbody>
+            ${ rows.join('') }
+        </tbody>
     </table>
 `

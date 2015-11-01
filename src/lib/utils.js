@@ -1,12 +1,27 @@
 
+/**
+ * @param  {object} obj - Object to test
+ * @return {boolean}
+ */
 export var isArray = (obj) => {
     return (/Array/).test(Object.prototype.toString.call(obj));
 }
 
+/**
+ * @param  {object} obj - Object to test
+ * @return {boolean}
+ */
 export var isDate = (obj) => {
     return (/Date/).test(Object.prototype.toString.call(obj)) && !isNaN(obj.getTime());
 }
 
+/**
+ * 
+ * @param  {object} to - Object to extend
+ * @param  {object} from - Object to extend from
+ * @param  {boolean} overwrite - Should overrwrite existing keys
+ * @return {object}
+ */
 export var extend = (to, from, overwrite) => {
     let prop, hasProp;
 
