@@ -5,9 +5,9 @@ module.exports = {
             test: /pikaday2\.js$/,
             loader: 'expose?Pikaday2',
         }, {
-            test: /\.jsx?$/,
-            exclude: /(node_modules|bower_components)/,
-            loader: "babel?stage=0"
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: "babel-loader"
         }]
     },
     output: {
