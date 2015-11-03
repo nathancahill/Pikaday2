@@ -131,13 +131,13 @@ var renderHead = (opts) => {
 /**
  * Returns HTML for the title with select labels for years and months
  * @param  {object} opts - Options
- * @param  {} c
- * @param  {number} year
+ * @param  {number} nthCalendar - The nth calendar
+ * @param  {number} year - The year
  * @param  {number} month
- * @param  {number} refYear
+ * @param  {number} refYear - The year of the first calendar
  * @return {string}
  */
-export var renderTitle = (opts, c, year, month, refYear) => {
+export var renderTitle = (opts, nthCalendar, year, month, refYear) => {
     let i, j, arr,
         isMinYear = year === opts.minYear,
         isMaxYear = year === opts.maxYear,
@@ -149,7 +149,7 @@ export var renderTitle = (opts, c, year, month, refYear) => {
 
     for (arr = [], i = 0; i < 12; i++) {
         arr.push(`
-            <option value="${ (year === refYear ? i - c : 12 + i - c) }"
+            <option value="${ (year === refYear ? i - nthCalendar : 12 + i - nthCalendar) }"
                     ${ (i === month ? ' selected': '') }
                     ${ ((isMinYear && i < opts.minMonth) || (isMaxYear && i > opts.maxMonth) ? 'disabled' : '') }>
                 ${ opts.i18n.months[i] }
@@ -206,7 +206,7 @@ export var renderTitle = (opts, c, year, month, refYear) => {
         next = false;
     }
 
-    if (c === 0) {
+    if (nthCalendar === 0) {
         html += `
             <button class="pika-prev ${ (prev ? '' : ' is-disabled') }" type="button">
                 ${ opts.i18n.previousMonth }
@@ -214,7 +214,7 @@ export var renderTitle = (opts, c, year, month, refYear) => {
         `
     }
 
-    if (c === (opts.numberOfMonths - 1) ) {
+    if (nthCalendar === (opts.numberOfMonths - 1) ) {
         html += `
             <button class="pika-next ${ (next ? '' : ' is-disabled') }" type="button">
                 ${ opts.i18n.nextMonth }
