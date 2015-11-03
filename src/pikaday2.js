@@ -8,7 +8,7 @@ import { renderDay, renderWeek, renderRow, renderTitle, renderTable } from './li
 const hasMoment = typeof moment === 'function';
 
 
-export default class Pikaday2 {
+class Pikaday2 {
     constructor (options) {
         let opts = this.config(options);
 
@@ -751,3 +751,5 @@ Pikaday2.defaults = {
     onClose: null,
     onDraw: null
 };
+
+export default Pikaday2;
