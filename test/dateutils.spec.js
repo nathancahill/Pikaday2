@@ -1,6 +1,6 @@
 
 import assert from 'assert';
-import { isWeekend, isLeapYear, getDaysInMonth, setToStartOfDay, compareDates, adjustCalendar } from '../src/lib/dateutils';
+import { isWeekend, getDaysInMonth, setToStartOfDay, compareDates, adjustCalendar } from '../src/lib/dateutils';
 
 
 describe('isWeekend', () => {
@@ -16,16 +16,6 @@ describe('isWeekend', () => {
         assert(!isWeekend(date));
     });
 })
-
-describe('isLeapYear', () => {
-    it('returns true when year is a leap year', () => {
-        assert(isLeapYear(2016));
-    });
-
-    it('returns false when year is not a leap year', () => {
-        assert(!isLeapYear(1900));
-    });
-});
 
 describe('getDaysInMonth', () => {
     it('returns 29 for febuary of a leap year', () => {

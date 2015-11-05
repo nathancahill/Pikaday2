@@ -38,7 +38,7 @@ var Pikaday2 =
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(0);
+/******/ 	return __webpack_require__(0).default;
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -46,6 +46,10 @@ var Pikaday2 =
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 
 	var _lodash = __webpack_require__(1);
 
@@ -59,17 +63,18 @@ var Pikaday2 =
 
 	var _lodash6 = _interopRequireDefault(_lodash5);
 
-	var _events = __webpack_require__(14);
+	var _events = __webpack_require__(13);
 
-	var _classutils = __webpack_require__(15);
+	var _classutils = __webpack_require__(14);
 
-	var _dateutils = __webpack_require__(16);
+	var _dateutils = __webpack_require__(15);
 
-	var _templating = __webpack_require__(17);
+	var _templating = __webpack_require__(16);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	/* global moment:false */
 
 	var hasMoment = typeof moment === 'function';
 
@@ -191,7 +196,7 @@ var Pikaday2 =
 	            opts.yearRange[0] = parseInt(opts.yearRange[0], 10) || fallback;
 	            opts.yearRange[1] = parseInt(opts.yearRange[1], 10) || fallback;
 	        } else {
-	            opts.yearRange = Math.abs(parseInt(opts.yearRange, 10)) || defaults.yearRange;
+	            opts.yearRange = Math.abs(parseInt(opts.yearRange, 10)) || Pikaday2.defaults.yearRange;
 	            if (opts.yearRange > 100) {
 	                opts.yearRange = 100;
 	            }
@@ -813,7 +818,7 @@ var Pikaday2 =
 	    onDraw: null
 	};
 
-	module.exports = Pikaday2;
+	exports.default = Pikaday2;
 
 /***/ },
 /* 1 */
@@ -1073,7 +1078,7 @@ var Pikaday2 =
 	 * Available under MIT license <https://lodash.com/license>
 	 */
 	var baseAssign = __webpack_require__(4),
-	    createAssigner = __webpack_require__(10),
+	    createAssigner = __webpack_require__(9),
 	    keys = __webpack_require__(6);
 
 	/**
@@ -1231,7 +1236,7 @@ var Pikaday2 =
 	 */
 	var getNative = __webpack_require__(7),
 	    isArguments = __webpack_require__(8),
-	    isArray = __webpack_require__(9);
+	    isArray = __webpack_require__(2);
 
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -1716,192 +1721,6 @@ var Pikaday2 =
 
 /***/ },
 /* 9 */
-/***/ function(module, exports) {
-
-	/**
-	 * lodash 3.0.4 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-
-	/** `Object#toString` result references. */
-	var arrayTag = '[object Array]',
-	    funcTag = '[object Function]';
-
-	/** Used to detect host constructors (Safari > 5). */
-	var reIsHostCtor = /^\[object .+?Constructor\]$/;
-
-	/**
-	 * Checks if `value` is object-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
-
-	/** Used for native method references. */
-	var objectProto = Object.prototype;
-
-	/** Used to resolve the decompiled source of functions. */
-	var fnToString = Function.prototype.toString;
-
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
-
-	/**
-	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objToString = objectProto.toString;
-
-	/** Used to detect if a method is native. */
-	var reIsNative = RegExp('^' +
-	  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
-	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-	);
-
-	/* Native method references for those with the same name as other `lodash` methods. */
-	var nativeIsArray = getNative(Array, 'isArray');
-
-	/**
-	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
-	 * of an array-like value.
-	 */
-	var MAX_SAFE_INTEGER = 9007199254740991;
-
-	/**
-	 * Gets the native function at `key` of `object`.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @param {string} key The key of the method to get.
-	 * @returns {*} Returns the function if it's native, else `undefined`.
-	 */
-	function getNative(object, key) {
-	  var value = object == null ? undefined : object[key];
-	  return isNative(value) ? value : undefined;
-	}
-
-	/**
-	 * Checks if `value` is a valid array-like length.
-	 *
-	 * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
-	 */
-	function isLength(value) {
-	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-	}
-
-	/**
-	 * Checks if `value` is classified as an `Array` object.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
-	 * @example
-	 *
-	 * _.isArray([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isArray(function() { return arguments; }());
-	 * // => false
-	 */
-	var isArray = nativeIsArray || function(value) {
-	  return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
-	};
-
-	/**
-	 * Checks if `value` is classified as a `Function` object.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
-	 * @example
-	 *
-	 * _.isFunction(_);
-	 * // => true
-	 *
-	 * _.isFunction(/abc/);
-	 * // => false
-	 */
-	function isFunction(value) {
-	  // The use of `Object#toString` avoids issues with the `typeof` operator
-	  // in older versions of Chrome and Safari which return 'function' for regexes
-	  // and Safari 8 equivalents which return 'object' for typed array constructors.
-	  return isObject(value) && objToString.call(value) == funcTag;
-	}
-
-	/**
-	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-	 * @example
-	 *
-	 * _.isObject({});
-	 * // => true
-	 *
-	 * _.isObject([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObject(1);
-	 * // => false
-	 */
-	function isObject(value) {
-	  // Avoid a V8 JIT bug in Chrome 19-20.
-	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-	  var type = typeof value;
-	  return !!value && (type == 'object' || type == 'function');
-	}
-
-	/**
-	 * Checks if `value` is a native function.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
-	 * @example
-	 *
-	 * _.isNative(Array.prototype.push);
-	 * // => true
-	 *
-	 * _.isNative(_);
-	 * // => false
-	 */
-	function isNative(value) {
-	  if (value == null) {
-	    return false;
-	  }
-	  if (isFunction(value)) {
-	    return reIsNative.test(fnToString.call(value));
-	  }
-	  return isObjectLike(value) && reIsHostCtor.test(value);
-	}
-
-	module.exports = isArray;
-
-
-/***/ },
-/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1912,9 +1731,9 @@ var Pikaday2 =
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var bindCallback = __webpack_require__(11),
-	    isIterateeCall = __webpack_require__(12),
-	    restParam = __webpack_require__(13);
+	var bindCallback = __webpack_require__(10),
+	    isIterateeCall = __webpack_require__(11),
+	    restParam = __webpack_require__(12);
 
 	/**
 	 * Creates a function that assigns properties of source object(s) to a given
@@ -1959,7 +1778,7 @@ var Pikaday2 =
 
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports) {
 
 	/**
@@ -2030,7 +1849,7 @@ var Pikaday2 =
 
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports) {
 
 	/**
@@ -2168,7 +1987,7 @@ var Pikaday2 =
 
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports) {
 
 	/**
@@ -2241,7 +2060,7 @@ var Pikaday2 =
 
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2308,7 +2127,7 @@ var Pikaday2 =
 	};
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2357,7 +2176,7 @@ var Pikaday2 =
 	};
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2365,7 +2184,7 @@ var Pikaday2 =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.adjustCalendar = exports.compareDates = exports.setToStartOfDay = exports.getDaysInMonth = exports.isLeapYear = exports.isWeekend = undefined;
+	exports.adjustCalendar = exports.compareDates = exports.setToStartOfDay = exports.getDaysInMonth = exports.isWeekend = undefined;
 
 	var _lodash = __webpack_require__(1);
 
@@ -2391,7 +2210,7 @@ var Pikaday2 =
 	 *
 	 * Solution by Matti Virkkunen: http://stackoverflow.com/a/4881951
 	 */
-	var isLeapYear = exports.isLeapYear = function isLeapYear(year) {
+	var isLeapYear = function isLeapYear(year) {
 	    return year % 4 === 0 && year % 100 !== 0 || year % 400 === 0;
 	};
 
@@ -2441,7 +2260,7 @@ var Pikaday2 =
 	};
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

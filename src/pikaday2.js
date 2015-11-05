@@ -1,11 +1,13 @@
 
+/* global moment:false */
+
 import isDate from 'lodash.isdate'
 import isArray from 'lodash.isarray'
 import assign from 'lodash.assign'
 
 import { addEvent, removeEvent, fireEvent, hasEventListeners } from './lib/events'
 import { addClass, removeClass, hasClass } from './lib/classutils'
-import { isWeekend, isLeapYear, getDaysInMonth, setToStartOfDay, compareDates, adjustCalendar } from './lib/dateutils'
+import { isWeekend, getDaysInMonth, setToStartOfDay, compareDates, adjustCalendar } from './lib/dateutils'
 import { renderDay, renderWeek, renderRow, renderTitle, renderTable } from './lib/templating'
 
 const hasMoment = typeof moment === 'function';
@@ -119,7 +121,7 @@ class Pikaday2 {
             opts.yearRange[0] = parseInt(opts.yearRange[0], 10) || fallback;
             opts.yearRange[1] = parseInt(opts.yearRange[1], 10) || fallback;
         } else {
-            opts.yearRange = Math.abs(parseInt(opts.yearRange, 10)) || defaults.yearRange;
+            opts.yearRange = Math.abs(parseInt(opts.yearRange, 10)) || Pikaday2.defaults.yearRange;
             if (opts.yearRange > 100) {
                 opts.yearRange = 100;
             }
@@ -756,4 +758,4 @@ Pikaday2.defaults = {
     onDraw: null
 };
 
-module.exports = Pikaday2;
+export default Pikaday2;

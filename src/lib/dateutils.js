@@ -19,7 +19,7 @@ export var isWeekend = date => {
  *
  * Solution by Matti Virkkunen: http://stackoverflow.com/a/4881951
  */
-export var isLeapYear = year => {
+var isLeapYear = year => {
     return year % 4 === 0 && year % 100 !== 0 || year % 400 === 0;
 }
 
