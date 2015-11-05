@@ -1,5 +1,6 @@
 ## Pikaday 2
 
+[![Build Status](https://travis-ci.org/nathancahill/Pikaday2.svg?branch=master)](https://travis-ci.org/nathancahill/Pikaday2)
 [![File Size](https://badge-size.herokuapp.com/nathancahill/Pikaday2/master/dist/pikaday2.min.js.svg?compression=gzip&label=size)](https://raw.githubusercontent.com/nathancahill/Pikaday2/master/dist/pikaday2.min.js)
 
 A fork of Pikaday, the refreshing JavaScript Datepicker.
