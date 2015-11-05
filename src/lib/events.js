@@ -1,5 +1,5 @@
 
-import { extend } from './utils'
+import assign from 'lodash.assign'
 
 export const hasEventListeners = !!window.addEventListener;
 
@@ -42,11 +42,11 @@ export var fireEvent = (el, eventName, data) => {
     if (window.document.createEvent) {
         ev = window.document.createEvent('HTMLEvents');
         ev.initEvent(eventName, true, false);
-        ev = extend(ev, data);
+        ev = assign(ev, data);
         el.dispatchEvent(ev);
     } else if (window.document.createEventObject) {
         ev = window.document.createEventObject();
-        ev = extend(ev, data);
+        ev = assign(ev, data);
         el.fireEvent('on' + eventName, ev);
     }
 }

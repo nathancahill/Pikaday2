@@ -1,3 +1,4 @@
+var Pikaday2 =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -44,44 +45,109 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Pikaday2"] = __webpack_require__(1);
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 1 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
-	    value: true
-	});
+	var _lodash = __webpack_require__(1);
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _libUtils = __webpack_require__(2);
+	var _lodash3 = __webpack_require__(2);
 
-	var _libEvents = __webpack_require__(3);
+	var _lodash4 = _interopRequireDefault(_lodash3);
 
-	var _libClassutils = __webpack_require__(4);
+	var _lodash5 = __webpack_require__(3);
 
-	var _libDateutils = __webpack_require__(5);
+	var _lodash6 = _interopRequireDefault(_lodash5);
 
-	var _libTemplating = __webpack_require__(6);
+	var _events = __webpack_require__(14);
+
+	var _classutils = __webpack_require__(15);
+
+	var _dateutils = __webpack_require__(16);
+
+	var _templating = __webpack_require__(17);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var hasMoment = typeof moment === 'function';
 
 	var Pikaday2 = function Pikaday2(options) {
-	    var _this = this;
-
 	    _classCallCheck(this, Pikaday2);
+
+	    _initialiseProps.call(this);
+
+	    var opts = this.config(options);
+
+	    this.el = document.createElement('div');
+	    this.el.className = 'pika-single' + (opts.isRTL ? ' is-rtl' : '') + (opts.theme ? ' ' + opts.theme : '');
+
+	    (0, _events.addEvent)(this.el, 'mousedown', this._onMouseDown, true);
+	    (0, _events.addEvent)(this.el, 'touchend', this._onMouseDown, true);
+	    (0, _events.addEvent)(this.el, 'change', this._onChange);
+
+	    if (opts.field) {
+	        if (opts.container) {
+	            opts.container.appendChild(this.el);
+	        } else if (opts.bound) {
+	            document.body.appendChild(this.el);
+	        } else {
+	            opts.field.parentNode.insertBefore(this.el, opts.field.nextSibling);
+	        }
+
+	        (0, _events.addEvent)(opts.field, 'change', this._onInputChange);
+
+	        if (!opts.defaultDate) {
+	            if (opts.field.value) {
+	                if (hasMoment) {
+	                    opts.defaultDate = moment(opts.field.value, opts.format).toDate();
+	                } else {
+	                    opts.defaultDate = new Date(Date.parse(opts.field.value));
+	                }
+
+	                opts.setDefaultDate = true;
+	            }
+	        }
+	    }
+
+	    if ((0, _lodash2.default)(opts.defaultDate)) {
+	        if (opts.setDefaultDate) {
+	            this.setDate(opts.defaultDate, true);
+	        } else {
+	            this.gotoDate(opts.defaultDate);
+	        }
+	    } else {
+	        this.gotoDate(new Date());
+	    }
+
+	    if (opts.bound) {
+	        this.hide();
+	        this.el.className += ' is-bound';
+
+	        (0, _events.addEvent)(opts.trigger, 'click', this._onInputClick);
+	        (0, _events.addEvent)(opts.trigger, 'focus', this._onInputFocus);
+	        (0, _events.addEvent)(opts.trigger, 'blur', this._onInputBlur);
+	    } else {
+	        this.show();
+	    }
+	}
+
+	// Public API
+
+	// Events
+
+	;
+
+	var _initialiseProps = function _initialiseProps() {
+	    var _this = this;
 
 	    this.config = function (options) {
 	        if (!_this.options) {
-	            _this.options = (0, _libUtils.extend)({}, Pikaday2.defaults, true);
+	            _this.options = (0, _lodash6.default)({}, Pikaday2.defaults, true);
 	        }
 
-	        var opts = (0, _libUtils.extend)(_this.options, options, true);
+	        var opts = (0, _lodash6.default)(_this.options, options, true);
 
 	        opts.isRTL = !!opts.isRTL;
 
@@ -100,11 +166,11 @@
 	        var nom = parseInt(opts.numberOfMonths, 10) || 1;
 	        opts.numberOfMonths = nom > 4 ? 4 : nom;
 
-	        if (!(0, _libUtils.isDate)(opts.minDate)) {
+	        if (!(0, _lodash2.default)(opts.minDate)) {
 	            opts.minDate = false;
 	        }
 
-	        if (!(0, _libUtils.isDate)(opts.maxDate)) {
+	        if (!(0, _lodash2.default)(opts.maxDate)) {
 	            opts.maxDate = false;
 	        }
 
@@ -120,7 +186,7 @@
 	            _this.setMaxDate(opts.maxDate);
 	        }
 
-	        if ((0, _libUtils.isArray)(opts.yearRange)) {
+	        if ((0, _lodash4.default)(opts.yearRange)) {
 	            var fallback = new Date().getFullYear() - 10;
 	            opts.yearRange[0] = parseInt(opts.yearRange[0], 10) || fallback;
 	            opts.yearRange[1] = parseInt(opts.yearRange[1], 10) || fallback;
@@ -135,7 +201,7 @@
 	    };
 
 	    this.toString = function (format) {
-	        return !(0, _libUtils.isDate)(_this._d) ? '' : hasMoment ? moment(_this._d).format(format || _this.options.format) : _this._d.toDateString();
+	        return !(0, _lodash2.default)(_this._d) ? '' : hasMoment ? moment(_this._d).format(format || _this.options.format) : _this._d.toDateString();
 	    };
 
 	    this.getMoment = function () {
@@ -149,7 +215,7 @@
 	    };
 
 	    this.getDate = function () {
-	        return (0, _libUtils.isDate)(_this._d) ? new Date(_this._d.getTime()) : null;
+	        return (0, _lodash2.default)(_this._d) ? new Date(_this._d.getTime()) : null;
 	    };
 
 	    this.setDate = function (date, preventOnSelect) {
@@ -158,7 +224,7 @@
 
 	            if (_this.options.field) {
 	                _this.options.field.value = '';
-	                (0, _libEvents.fireEvent)(_this.options.field, 'change', { firedBy: _this });
+	                (0, _events.fireEvent)(_this.options.field, 'change', { firedBy: _this });
 	            }
 
 	            return _this.draw();
@@ -168,28 +234,28 @@
 	            date = new Date(Date.parse(date));
 	        }
 
-	        if (!(0, _libUtils.isDate)(date)) {
+	        if (!(0, _lodash2.default)(date)) {
 	            return;
 	        }
 
 	        var min = _this.options.minDate,
 	            max = _this.options.maxDate;
 
-	        if ((0, _libUtils.isDate)(min) && date < min) {
+	        if ((0, _lodash2.default)(min) && date < min) {
 	            date = min;
-	        } else if ((0, _libUtils.isDate)(max) && date > max) {
+	        } else if ((0, _lodash2.default)(max) && date > max) {
 	            date = max;
 	        }
 
 	        _this._d = new Date(date.getTime());
 
-	        (0, _libDateutils.setToStartOfDay)(_this._d);
+	        (0, _dateutils.setToStartOfDay)(_this._d);
 
 	        _this.gotoDate(_this._d);
 
 	        if (_this.options.field) {
 	            _this.options.field.value = _this.toString();
-	            (0, _libEvents.fireEvent)(_this.options.field, 'change', { firedBy: _this });
+	            (0, _events.fireEvent)(_this.options.field, 'change', { firedBy: _this });
 	        }
 
 	        if (!preventOnSelect && typeof _this.options.onSelect === 'function') {
@@ -200,7 +266,7 @@
 	    this.gotoDate = function (date) {
 	        var newCalendar = true;
 
-	        if (!(0, _libUtils.isDate)(date)) {
+	        if (!(0, _lodash2.default)(date)) {
 	            return;
 	        }
 
@@ -228,10 +294,10 @@
 	    };
 
 	    this.adjustCalendars = function () {
-	        _this.calendars[0] = (0, _libDateutils.adjustCalendar)(_this.calendars[0]);
+	        _this.calendars[0] = (0, _dateutils.adjustCalendar)(_this.calendars[0]);
 
 	        for (var c = 1; c < _this.options.numberOfMonths; c++) {
-	            _this.calendars[c] = (0, _libDateutils.adjustCalendar)({
+	            _this.calendars[c] = (0, _dateutils.adjustCalendar)({
 	                month: _this.calendars[0].month + c,
 	                year: _this.calendars[0].year
 	            });
@@ -269,7 +335,7 @@
 	    };
 
 	    this.setMinDate = function (value) {
-	        (0, _libDateutils.setToStartOfDay)(value);
+	        (0, _dateutils.setToStartOfDay)(value);
 
 	        _this.options.minDate = value;
 	        _this.options.minYear = value.getFullYear();
@@ -277,7 +343,7 @@
 	    };
 
 	    this.setMaxDate = function (value) {
-	        (0, _libDateutils.setToStartOfDay)(value);
+	        (0, _dateutils.setToStartOfDay)(value);
 
 	        _this.options.maxDate = value;
 	        _this.options.maxYear = value.getFullYear();
@@ -321,7 +387,7 @@
 	        }
 
 	        for (var c = 0; c < opts.numberOfMonths; c++) {
-	            html += '<div class="pika-lendar">' + (0, _libTemplating.renderTitle)(opts, c, _this.calendars[c].year, _this.calendars[c].month, _this.calendars[0].year) + _this.render(_this.calendars[c].year, _this.calendars[c].month) + '</div>';
+	            html += '<div class="pika-lendar">' + (0, _templating.renderTitle)(opts, c, _this.calendars[c].year, _this.calendars[c].month, _this.calendars[0].year) + _this.render(_this.calendars[c].year, _this.calendars[c].month) + '</div>';
 	        }
 
 	        _this.el.innerHTML = html;
@@ -397,12 +463,12 @@
 	    this.render = function (year, month) {
 	        var opts = _this.options,
 	            now = new Date(),
-	            days = (0, _libDateutils.getDaysInMonth)(year, month),
+	            days = (0, _dateutils.getDaysInMonth)(year, month),
 	            before = new Date(year, month, 1).getDay(),
 	            data = [],
 	            row = [];
 
-	        (0, _libDateutils.setToStartOfDay)(now);
+	        (0, _dateutils.setToStartOfDay)(now);
 
 	        if (opts.firstDay > 0) {
 	            before -= opts.firstDay;
@@ -423,13 +489,13 @@
 
 	        for (var i = 0, r = 0; i < cells; i++) {
 	            var day = new Date(year, month, 1 + (i - before)),
-	                isSelected = (0, _libUtils.isDate)(_this._d) ? (0, _libDateutils.compareDates)(day, _this._d) : false,
-	                isToday = (0, _libDateutils.compareDates)(day, now),
+	                isSelected = (0, _lodash2.default)(_this._d) ? (0, _dateutils.compareDates)(day, _this._d) : false,
+	                isToday = (0, _dateutils.compareDates)(day, now),
 	                isEmpty = i < before || i >= days + before,
-	                isStartRange = opts.startRange && (0, _libDateutils.compareDates)(opts.startRange, day),
-	                isEndRange = opts.endRange && (0, _libDateutils.compareDates)(opts.endRange, day),
+	                isStartRange = opts.startRange && (0, _dateutils.compareDates)(opts.startRange, day),
+	                isEndRange = opts.endRange && (0, _dateutils.compareDates)(opts.endRange, day),
 	                isInRange = opts.startRange && opts.endRange && opts.startRange < day && day < opts.endRange,
-	                isDisabled = opts.minDate && day < opts.minDate || opts.maxDate && day > opts.maxDate || opts.disableWeekends && (0, _libDateutils.isWeekend)(day) || opts.disableDayFn && opts.disableDayFn(day),
+	                isDisabled = opts.minDate && day < opts.minDate || opts.maxDate && day > opts.maxDate || opts.disableWeekends && (0, _dateutils.isWeekend)(day) || opts.disableDayFn && opts.disableDayFn(day),
 	                dayConfig = {
 	                day: 1 + (i - before),
 	                month: month,
@@ -443,19 +509,19 @@
 	                isInRange: isInRange
 	            };
 
-	            row.push((0, _libTemplating.renderDay)(dayConfig));
+	            row.push((0, _templating.renderDay)(dayConfig));
 
 	            if (++r === 7) {
 	                if (opts.showWeekNumber) {
-	                    row.unshift((0, _libTemplating.renderWeek)(i - before, month, year));
+	                    row.unshift((0, _templating.renderWeek)(i - before, month, year));
 	                }
-	                data.push((0, _libTemplating.renderRow)(row, opts.isRTL));
+	                data.push((0, _templating.renderRow)(row, opts.isRTL));
 	                row = [];
 	                r = 0;
 	            }
 	        }
 
-	        return (0, _libTemplating.renderTable)(opts, data);
+	        return (0, _templating.renderTable)(opts, data);
 	    };
 
 	    this.isVisible = function () {
@@ -464,13 +530,13 @@
 
 	    this.show = function () {
 	        if (!_this.visible) {
-	            (0, _libClassutils.removeClass)(_this.el, 'is-hidden');
+	            (0, _classutils.removeClass)(_this.el, 'is-hidden');
 
 	            _this.visible = true;
 	            _this.draw();
 
 	            if (_this.options.bound) {
-	                (0, _libEvents.addEvent)(document, 'click', _this._onClick);
+	                (0, _events.addEvent)(document, 'click', _this._onClick);
 	                _this.adjustPosition();
 	            }
 
@@ -485,14 +551,14 @@
 
 	        if (v !== false) {
 	            if (_this.options.bound) {
-	                (0, _libEvents.removeEvent)(document, 'click', _this._onClick);
+	                (0, _events.removeEvent)(document, 'click', _this._onClick);
 	            }
 
 	            _this.el.style.position = 'static'; // reset
 	            _this.el.style.left = 'auto';
 	            _this.el.style.top = 'auto';
 
-	            (0, _libClassutils.addClass)(_this.el, 'is-hidden');
+	            (0, _classutils.addClass)(_this.el, 'is-hidden');
 
 	            _this.visible = false;
 
@@ -505,17 +571,17 @@
 	    this.destroy = function () {
 	        _this.hide();
 
-	        (0, _libEvents.removeEvent)(_this.el, 'mousedown', _this._onMouseDown, true);
-	        (0, _libEvents.removeEvent)(_this.el, 'touchend', _this._onMouseDown, true);
-	        (0, _libEvents.removeEvent)(_this.el, 'change', _this._onChange);
+	        (0, _events.removeEvent)(_this.el, 'mousedown', _this._onMouseDown, true);
+	        (0, _events.removeEvent)(_this.el, 'touchend', _this._onMouseDown, true);
+	        (0, _events.removeEvent)(_this.el, 'change', _this._onChange);
 
 	        if (_this.options.field) {
-	            (0, _libEvents.removeEvent)(_this.options.field, 'change', _this._onInputChange);
+	            (0, _events.removeEvent)(_this.options.field, 'change', _this._onInputChange);
 
 	            if (_this.options.bound) {
-	                (0, _libEvents.removeEvent)(_this.options.trigger, 'click', _this._onInputClick);
-	                (0, _libEvents.removeEvent)(_this.options.trigger, 'focus', _this._onInputFocus);
-	                (0, _libEvents.removeEvent)(_this.options.trigger, 'blur', _this._onInputBlur);
+	                (0, _events.removeEvent)(_this.options.trigger, 'click', _this._onInputClick);
+	                (0, _events.removeEvent)(_this.options.trigger, 'focus', _this._onInputFocus);
+	                (0, _events.removeEvent)(_this.options.trigger, 'blur', _this._onInputBlur);
 	            }
 	        }
 
@@ -537,8 +603,8 @@
 	            return;
 	        }
 
-	        if (!(0, _libClassutils.hasClass)(target.parentNode, 'is-disabled')) {
-	            if ((0, _libClassutils.hasClass)(target, 'pika-button') && !(0, _libClassutils.hasClass)(target, 'is-empty')) {
+	        if (!(0, _classutils.hasClass)(target.parentNode, 'is-disabled')) {
+	            if ((0, _classutils.hasClass)(target, 'pika-button') && !(0, _classutils.hasClass)(target, 'is-empty')) {
 	                _this.setDate(new Date(target.getAttribute('data-pika-year'), target.getAttribute('data-pika-month'), target.getAttribute('data-pika-day')));
 
 	                if (_this.options.bound) {
@@ -550,14 +616,14 @@
 	                        }
 	                    }, 100);
 	                }
-	            } else if ((0, _libClassutils.hasClass)(target, 'pika-prev')) {
+	            } else if ((0, _classutils.hasClass)(target, 'pika-prev')) {
 	                _this.prevMonth();
-	            } else if ((0, _libClassutils.hasClass)(target, 'pika-next')) {
+	            } else if ((0, _classutils.hasClass)(target, 'pika-next')) {
 	                _this.nextMonth();
 	            }
 	        }
 
-	        if (!(0, _libClassutils.hasClass)(target, 'pika-select')) {
+	        if (!(0, _classutils.hasClass)(target, 'pika-select')) {
 	            // if this is touch event prevent mouse events emulation
 	            if (e.preventDefault) {
 	                e.preventDefault();
@@ -579,9 +645,9 @@
 	            return;
 	        }
 
-	        if ((0, _libClassutils.hasClass)(target, 'pika-select-month')) {
+	        if ((0, _classutils.hasClass)(target, 'pika-select-month')) {
 	            _this.gotoMonth(target.value);
-	        } else if ((0, _libClassutils.hasClass)(target, 'pika-select-year')) {
+	        } else if ((0, _classutils.hasClass)(target, 'pika-select-year')) {
 	            _this.gotoYear(target.value);
 	        }
 	    };
@@ -600,7 +666,7 @@
 	            date = new Date(Date.parse(_this.options.field.value));
 	        }
 
-	        if ((0, _libUtils.isDate)(date)) {
+	        if ((0, _lodash2.default)(date)) {
 	            _this.setDate(date);
 	        }
 
@@ -622,7 +688,7 @@
 	        var pEl = document.activeElement;
 
 	        do {
-	            if ((0, _libClassutils.hasClass)(pEl, 'pika-single')) {
+	            if ((0, _classutils.hasClass)(pEl, 'pika-single')) {
 	                return;
 	            }
 	        } while (pEl = pEl.parentNode);
@@ -645,15 +711,15 @@
 	            return;
 	        }
 
-	        if (!_libEvents.hasEventListeners && (0, _libClassutils.hasClass)(target, 'pika-select')) {
+	        if (!_events.hasEventListeners && (0, _classutils.hasClass)(target, 'pika-select')) {
 	            if (!target.onchange) {
 	                target.setAttribute('onchange', 'return;');
-	                (0, _libEvents.addEvent)(target, 'change', _this._onChange);
+	                (0, _events.addEvent)(target, 'change', _this._onChange);
 	            }
 	        }
 
 	        do {
-	            if ((0, _libClassutils.hasClass)(pEl, 'pika-single') || pEl === _this.options.trigger) {
+	            if ((0, _classutils.hasClass)(pEl, 'pika-single') || pEl === _this.options.trigger) {
 	                return;
 	            }
 	        } while (pEl = pEl.parentNode);
@@ -662,66 +728,7 @@
 	            _this.hide();
 	        }
 	    };
-
-	    var opts = this.config(options);
-
-	    this.el = document.createElement('div');
-	    this.el.className = 'pika-single' + (opts.isRTL ? ' is-rtl' : '') + (opts.theme ? ' ' + opts.theme : '');
-
-	    (0, _libEvents.addEvent)(this.el, 'mousedown', this._onMouseDown, true);
-	    (0, _libEvents.addEvent)(this.el, 'touchend', this._onMouseDown, true);
-	    (0, _libEvents.addEvent)(this.el, 'change', this._onChange);
-
-	    if (opts.field) {
-	        if (opts.container) {
-	            opts.container.appendChild(this.el);
-	        } else if (opts.bound) {
-	            document.body.appendChild(this.el);
-	        } else {
-	            opts.field.parentNode.insertBefore(this.el, opts.field.nextSibling);
-	        }
-
-	        (0, _libEvents.addEvent)(opts.field, 'change', this._onInputChange);
-
-	        if (!opts.defaultDate) {
-	            if (hasMoment && opts.field.value) {
-	                opts.defaultDate = moment(opts.field.value, opts.format).toDate();
-	            } else {
-	                opts.defaultDate = new Date(Date.parse(opts.field.value));
-	            }
-	            opts.setDefaultDate = true;
-	        }
-	    }
-
-	    var defDate = opts.defaultDate;
-
-	    if ((0, _libUtils.isDate)(defDate)) {
-	        if (opts.setDefaultDate) {
-	            this.setDate(defDate, true);
-	        } else {
-	            this.gotoDate(defDate);
-	        }
-	    } else {
-	        this.gotoDate(new Date());
-	    }
-
-	    if (opts.bound) {
-	        this.hide();
-	        this.el.className += ' is-bound';
-
-	        (0, _libEvents.addEvent)(opts.trigger, 'click', this._onInputClick);
-	        (0, _libEvents.addEvent)(opts.trigger, 'focus', this._onInputFocus);
-	        (0, _libEvents.addEvent)(opts.trigger, 'blur', this._onInputBlur);
-	    } else {
-	        this.show();
-	    }
-	}
-
-	// Public API
-
-	;
-
-	exports['default'] = Pikaday2;
+	};
 
 	Pikaday2.defaults = {
 	    // bind the picker to a form field
@@ -805,95 +812,1460 @@
 	    onClose: null,
 	    onDraw: null
 	};
-	module.exports = exports['default'];
 
-	// Events
+	module.exports = Pikaday2;
+
+/***/ },
+/* 1 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.2 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** `Object#toString` result references. */
+	var dateTag = '[object Date]';
+
+	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/**
+	 * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/**
+	 * Checks if `value` is classified as a `Date` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isDate(new Date);
+	 * // => true
+	 *
+	 * _.isDate('Mon April 23 2012');
+	 * // => false
+	 */
+	function isDate(value) {
+	  return isObjectLike(value) && objToString.call(value) == dateTag;
+	}
+
+	module.exports = isDate;
+
 
 /***/ },
 /* 2 */
 /***/ function(module, exports) {
 
-	
 	/**
-	 * @param  {object} obj - Object to test
-	 * @return {boolean}
+	 * lodash 3.0.4 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
 	 */
-	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
-	    value: true
-	});
-	var isArray = function isArray(obj) {
-	    return (/Array/.test(Object.prototype.toString.call(obj))
-	    );
+	/** `Object#toString` result references. */
+	var arrayTag = '[object Array]',
+	    funcTag = '[object Function]';
+
+	/** Used to detect host constructors (Safari > 5). */
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to resolve the decompiled source of functions. */
+	var fnToString = Function.prototype.toString;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/** Used to detect if a method is native. */
+	var reIsNative = RegExp('^' +
+	  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
+	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+	);
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeIsArray = getNative(Array, 'isArray');
+
+	/**
+	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+	function getNative(object, key) {
+	  var value = object == null ? undefined : object[key];
+	  return isNative(value) ? value : undefined;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is classified as an `Array` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isArray([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArray(function() { return arguments; }());
+	 * // => false
+	 */
+	var isArray = nativeIsArray || function(value) {
+	  return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
 	};
 
-	exports.isArray = isArray;
 	/**
-	 * @param  {object} obj - Object to test
-	 * @return {boolean}
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
 	 */
-	var isDate = function isDate(obj) {
-	    return (/Date/.test(Object.prototype.toString.call(obj)) && !isNaN(obj.getTime())
-	    );
-	};
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in older versions of Chrome and Safari which return 'function' for regexes
+	  // and Safari 8 equivalents which return 'object' for typed array constructors.
+	  return isObject(value) && objToString.call(value) == funcTag;
+	}
 
-	exports.isDate = isDate;
 	/**
-	 * 
-	 * @param  {object} to - Object to extend
-	 * @param  {object} from - Object to extend from
-	 * @param  {boolean} overwrite - Should overrwrite existing keys
-	 * @return {object}
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
 	 */
-	var extend = function extend(to, from, overwrite) {
-	    var prop = undefined,
-	        hasProp = undefined;
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
 
-	    for (prop in from) {
-	        hasProp = to[prop] !== undefined;
-	        if (hasProp && typeof from[prop] === 'object' && from[prop] !== null && from[prop].nodeName === undefined) {
-	            if (isDate(from[prop])) {
-	                if (overwrite) {
-	                    to[prop] = new Date(from[prop].getTime());
-	                }
-	            } else if (isArray(from[prop])) {
-	                if (overwrite) {
-	                    to[prop] = from[prop].slice(0);
-	                }
-	            } else {
-	                to[prop] = extend({}, from[prop], overwrite);
-	            }
-	        } else if (overwrite || !hasProp) {
-	            to[prop] = from[prop];
-	        }
-	    }
-	    return to;
-	};
-	exports.extend = extend;
+	/**
+	 * Checks if `value` is a native function.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+	 * @example
+	 *
+	 * _.isNative(Array.prototype.push);
+	 * // => true
+	 *
+	 * _.isNative(_);
+	 * // => false
+	 */
+	function isNative(value) {
+	  if (value == null) {
+	    return false;
+	  }
+	  if (isFunction(value)) {
+	    return reIsNative.test(fnToString.call(value));
+	  }
+	  return isObjectLike(value) && reIsHostCtor.test(value);
+	}
+
+	module.exports = isArray;
+
 
 /***/ },
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/**
+	 * lodash 3.2.0 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var baseAssign = __webpack_require__(4),
+	    createAssigner = __webpack_require__(10),
+	    keys = __webpack_require__(6);
 
-	Object.defineProperty(exports, '__esModule', {
-	    value: true
+	/**
+	 * A specialized version of `_.assign` for customizing assigned values without
+	 * support for argument juggling, multiple sources, and `this` binding `customizer`
+	 * functions.
+	 *
+	 * @private
+	 * @param {Object} object The destination object.
+	 * @param {Object} source The source object.
+	 * @param {Function} customizer The function to customize assigned values.
+	 * @returns {Object} Returns `object`.
+	 */
+	function assignWith(object, source, customizer) {
+	  var index = -1,
+	      props = keys(source),
+	      length = props.length;
+
+	  while (++index < length) {
+	    var key = props[index],
+	        value = object[key],
+	        result = customizer(value, source[key], key, object, source);
+
+	    if ((result === result ? (result !== value) : (value === value)) ||
+	        (value === undefined && !(key in object))) {
+	      object[key] = result;
+	    }
+	  }
+	  return object;
+	}
+
+	/**
+	 * Assigns own enumerable properties of source object(s) to the destination
+	 * object. Subsequent sources overwrite property assignments of previous sources.
+	 * If `customizer` is provided it is invoked to produce the assigned values.
+	 * The `customizer` is bound to `thisArg` and invoked with five arguments:
+	 * (objectValue, sourceValue, key, object, source).
+	 *
+	 * **Note:** This method mutates `object` and is based on
+	 * [`Object.assign`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @alias extend
+	 * @category Object
+	 * @param {Object} object The destination object.
+	 * @param {...Object} [sources] The source objects.
+	 * @param {Function} [customizer] The function to customize assigned values.
+	 * @param {*} [thisArg] The `this` binding of `customizer`.
+	 * @returns {Object} Returns `object`.
+	 * @example
+	 *
+	 * _.assign({ 'user': 'barney' }, { 'age': 40 }, { 'user': 'fred' });
+	 * // => { 'user': 'fred', 'age': 40 }
+	 *
+	 * // using a customizer callback
+	 * var defaults = _.partialRight(_.assign, function(value, other) {
+	 *   return _.isUndefined(value) ? other : value;
+	 * });
+	 *
+	 * defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
+	 * // => { 'user': 'barney', 'age': 36 }
+	 */
+	var assign = createAssigner(function(object, source, customizer) {
+	  return customizer
+	    ? assignWith(object, source, customizer)
+	    : baseAssign(object, source);
 	});
 
-	var _utils = __webpack_require__(2);
+	module.exports = assign;
 
-	var hasEventListeners = !!window.addEventListener;
 
-	exports.hasEventListeners = hasEventListeners;
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.2.0 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var baseCopy = __webpack_require__(5),
+	    keys = __webpack_require__(6);
+
+	/**
+	 * The base implementation of `_.assign` without support for argument juggling,
+	 * multiple sources, and `customizer` functions.
+	 *
+	 * @private
+	 * @param {Object} object The destination object.
+	 * @param {Object} source The source object.
+	 * @returns {Object} Returns `object`.
+	 */
+	function baseAssign(object, source) {
+	  return source == null
+	    ? object
+	    : baseCopy(source, keys(source), object);
+	}
+
+	module.exports = baseAssign;
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/**
+	 * Copies properties of `source` to `object`.
+	 *
+	 * @private
+	 * @param {Object} source The object to copy properties from.
+	 * @param {Array} props The property names to copy.
+	 * @param {Object} [object={}] The object to copy properties to.
+	 * @returns {Object} Returns `object`.
+	 */
+	function baseCopy(source, props, object) {
+	  object || (object = {});
+
+	  var index = -1,
+	      length = props.length;
+
+	  while (++index < length) {
+	    var key = props[index];
+	    object[key] = source[key];
+	  }
+	  return object;
+	}
+
+	module.exports = baseCopy;
+
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.1.2 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var getNative = __webpack_require__(7),
+	    isArguments = __webpack_require__(8),
+	    isArray = __webpack_require__(9);
+
+	/** Used to detect unsigned integer values. */
+	var reIsUint = /^\d+$/;
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeKeys = getNative(Object, 'keys');
+
+	/**
+	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseProperty(key) {
+	  return function(object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	/**
+	 * Gets the "length" property value of `object`.
+	 *
+	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {*} Returns the "length" value.
+	 */
+	var getLength = baseProperty('length');
+
+	/**
+	 * Checks if `value` is array-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(getLength(value));
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return value > -1 && value % 1 == 0 && value < length;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * A fallback implementation of `Object.keys` which creates an array of the
+	 * own enumerable property names of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 */
+	function shimKeys(object) {
+	  var props = keysIn(object),
+	      propsLength = props.length,
+	      length = propsLength && object.length;
+
+	  var allowIndexes = !!length && isLength(length) &&
+	    (isArray(object) || isArguments(object));
+
+	  var index = -1,
+	      result = [];
+
+	  while (++index < propsLength) {
+	    var key = props[index];
+	    if ((allowIndexes && isIndex(key, length)) || hasOwnProperty.call(object, key)) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Creates an array of the own enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects. See the
+	 * [ES spec](http://ecma-international.org/ecma-262/6.0/#sec-object.keys)
+	 * for more details.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keys(new Foo);
+	 * // => ['a', 'b'] (iteration order is not guaranteed)
+	 *
+	 * _.keys('hi');
+	 * // => ['0', '1']
+	 */
+	var keys = !nativeKeys ? shimKeys : function(object) {
+	  var Ctor = object == null ? undefined : object.constructor;
+	  if ((typeof Ctor == 'function' && Ctor.prototype === object) ||
+	      (typeof object != 'function' && isArrayLike(object))) {
+	    return shimKeys(object);
+	  }
+	  return isObject(object) ? nativeKeys(object) : [];
+	};
+
+	/**
+	 * Creates an array of the own and inherited enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keysIn(new Foo);
+	 * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
+	 */
+	function keysIn(object) {
+	  if (object == null) {
+	    return [];
+	  }
+	  if (!isObject(object)) {
+	    object = Object(object);
+	  }
+	  var length = object.length;
+	  length = (length && isLength(length) &&
+	    (isArray(object) || isArguments(object)) && length) || 0;
+
+	  var Ctor = object.constructor,
+	      index = -1,
+	      isProto = typeof Ctor == 'function' && Ctor.prototype === object,
+	      result = Array(length),
+	      skipIndexes = length > 0;
+
+	  while (++index < length) {
+	    result[index] = (index + '');
+	  }
+	  for (var key in object) {
+	    if (!(skipIndexes && isIndex(key, length)) &&
+	        !(key == 'constructor' && (isProto || !hasOwnProperty.call(object, key)))) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+
+	module.exports = keys;
+
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.9.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** `Object#toString` result references. */
+	var funcTag = '[object Function]';
+
+	/** Used to detect host constructors (Safari > 5). */
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to resolve the decompiled source of functions. */
+	var fnToString = Function.prototype.toString;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/** Used to detect if a method is native. */
+	var reIsNative = RegExp('^' +
+	  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
+	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+	);
+
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+	function getNative(object, key) {
+	  var value = object == null ? undefined : object[key];
+	  return isNative(value) ? value : undefined;
+	}
+
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in older versions of Chrome and Safari which return 'function' for regexes
+	  // and Safari 8 equivalents which return 'object' for typed array constructors.
+	  return isObject(value) && objToString.call(value) == funcTag;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Checks if `value` is a native function.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+	 * @example
+	 *
+	 * _.isNative(Array.prototype.push);
+	 * // => true
+	 *
+	 * _.isNative(_);
+	 * // => false
+	 */
+	function isNative(value) {
+	  if (value == null) {
+	    return false;
+	  }
+	  if (isFunction(value)) {
+	    return reIsNative.test(fnToString.call(value));
+	  }
+	  return isObjectLike(value) && reIsHostCtor.test(value);
+	}
+
+	module.exports = getNative;
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.4 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/** Native method references. */
+	var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+	/**
+	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseProperty(key) {
+	  return function(object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	/**
+	 * Gets the "length" property value of `object`.
+	 *
+	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {*} Returns the "length" value.
+	 */
+	var getLength = baseProperty('length');
+
+	/**
+	 * Checks if `value` is array-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(getLength(value));
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is classified as an `arguments` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isArguments(function() { return arguments; }());
+	 * // => true
+	 *
+	 * _.isArguments([1, 2, 3]);
+	 * // => false
+	 */
+	function isArguments(value) {
+	  return isObjectLike(value) && isArrayLike(value) &&
+	    hasOwnProperty.call(value, 'callee') && !propertyIsEnumerable.call(value, 'callee');
+	}
+
+	module.exports = isArguments;
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.4 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** `Object#toString` result references. */
+	var arrayTag = '[object Array]',
+	    funcTag = '[object Function]';
+
+	/** Used to detect host constructors (Safari > 5). */
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to resolve the decompiled source of functions. */
+	var fnToString = Function.prototype.toString;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/** Used to detect if a method is native. */
+	var reIsNative = RegExp('^' +
+	  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
+	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+	);
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeIsArray = getNative(Array, 'isArray');
+
+	/**
+	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+	function getNative(object, key) {
+	  var value = object == null ? undefined : object[key];
+	  return isNative(value) ? value : undefined;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is classified as an `Array` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isArray([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArray(function() { return arguments; }());
+	 * // => false
+	 */
+	var isArray = nativeIsArray || function(value) {
+	  return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
+	};
+
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in older versions of Chrome and Safari which return 'function' for regexes
+	  // and Safari 8 equivalents which return 'object' for typed array constructors.
+	  return isObject(value) && objToString.call(value) == funcTag;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Checks if `value` is a native function.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+	 * @example
+	 *
+	 * _.isNative(Array.prototype.push);
+	 * // => true
+	 *
+	 * _.isNative(_);
+	 * // => false
+	 */
+	function isNative(value) {
+	  if (value == null) {
+	    return false;
+	  }
+	  if (isFunction(value)) {
+	    return reIsNative.test(fnToString.call(value));
+	  }
+	  return isObjectLike(value) && reIsHostCtor.test(value);
+	}
+
+	module.exports = isArray;
+
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.1.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var bindCallback = __webpack_require__(11),
+	    isIterateeCall = __webpack_require__(12),
+	    restParam = __webpack_require__(13);
+
+	/**
+	 * Creates a function that assigns properties of source object(s) to a given
+	 * destination object.
+	 *
+	 * **Note:** This function is used to create `_.assign`, `_.defaults`, and `_.merge`.
+	 *
+	 * @private
+	 * @param {Function} assigner The function to assign values.
+	 * @returns {Function} Returns the new assigner function.
+	 */
+	function createAssigner(assigner) {
+	  return restParam(function(object, sources) {
+	    var index = -1,
+	        length = object == null ? 0 : sources.length,
+	        customizer = length > 2 ? sources[length - 2] : undefined,
+	        guard = length > 2 ? sources[2] : undefined,
+	        thisArg = length > 1 ? sources[length - 1] : undefined;
+
+	    if (typeof customizer == 'function') {
+	      customizer = bindCallback(customizer, thisArg, 5);
+	      length -= 2;
+	    } else {
+	      customizer = typeof thisArg == 'function' ? thisArg : undefined;
+	      length -= (customizer ? 1 : 0);
+	    }
+	    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
+	      customizer = length < 3 ? undefined : customizer;
+	      length = 1;
+	    }
+	    while (++index < length) {
+	      var source = sources[index];
+	      if (source) {
+	        assigner(object, source, customizer);
+	      }
+	    }
+	    return object;
+	  });
+	}
+
+	module.exports = createAssigner;
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/**
+	 * A specialized version of `baseCallback` which only supports `this` binding
+	 * and specifying the number of arguments to provide to `func`.
+	 *
+	 * @private
+	 * @param {Function} func The function to bind.
+	 * @param {*} thisArg The `this` binding of `func`.
+	 * @param {number} [argCount] The number of arguments to provide to `func`.
+	 * @returns {Function} Returns the callback.
+	 */
+	function bindCallback(func, thisArg, argCount) {
+	  if (typeof func != 'function') {
+	    return identity;
+	  }
+	  if (thisArg === undefined) {
+	    return func;
+	  }
+	  switch (argCount) {
+	    case 1: return function(value) {
+	      return func.call(thisArg, value);
+	    };
+	    case 3: return function(value, index, collection) {
+	      return func.call(thisArg, value, index, collection);
+	    };
+	    case 4: return function(accumulator, value, index, collection) {
+	      return func.call(thisArg, accumulator, value, index, collection);
+	    };
+	    case 5: return function(value, other, key, object, source) {
+	      return func.call(thisArg, value, other, key, object, source);
+	    };
+	  }
+	  return function() {
+	    return func.apply(thisArg, arguments);
+	  };
+	}
+
+	/**
+	 * This method returns the first argument provided to it.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Utility
+	 * @param {*} value Any value.
+	 * @returns {*} Returns `value`.
+	 * @example
+	 *
+	 * var object = { 'user': 'fred' };
+	 *
+	 * _.identity(object) === object;
+	 * // => true
+	 */
+	function identity(value) {
+	  return value;
+	}
+
+	module.exports = bindCallback;
+
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.9 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** Used to detect unsigned integer values. */
+	var reIsUint = /^\d+$/;
+
+	/**
+	 * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseProperty(key) {
+	  return function(object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	/**
+	 * Gets the "length" property value of `object`.
+	 *
+	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {*} Returns the "length" value.
+	 */
+	var getLength = baseProperty('length');
+
+	/**
+	 * Checks if `value` is array-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(getLength(value));
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return value > -1 && value % 1 == 0 && value < length;
+	}
+
+	/**
+	 * Checks if the provided arguments are from an iteratee call.
+	 *
+	 * @private
+	 * @param {*} value The potential iteratee value argument.
+	 * @param {*} index The potential iteratee index or key argument.
+	 * @param {*} object The potential iteratee object argument.
+	 * @returns {boolean} Returns `true` if the arguments are from an iteratee call, else `false`.
+	 */
+	function isIterateeCall(value, index, object) {
+	  if (!isObject(object)) {
+	    return false;
+	  }
+	  var type = typeof index;
+	  if (type == 'number'
+	      ? (isArrayLike(object) && isIndex(index, object.length))
+	      : (type == 'string' && index in object)) {
+	    var other = object[index];
+	    return value === value ? (value === other) : (other !== other);
+	  }
+	  return false;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	module.exports = isIterateeCall;
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.6.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** Used as the `TypeError` message for "Functions" methods. */
+	var FUNC_ERROR_TEXT = 'Expected a function';
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeMax = Math.max;
+
+	/**
+	 * Creates a function that invokes `func` with the `this` binding of the
+	 * created function and arguments from `start` and beyond provided as an array.
+	 *
+	 * **Note:** This method is based on the [rest parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Function
+	 * @param {Function} func The function to apply a rest parameter to.
+	 * @param {number} [start=func.length-1] The start position of the rest parameter.
+	 * @returns {Function} Returns the new function.
+	 * @example
+	 *
+	 * var say = _.restParam(function(what, names) {
+	 *   return what + ' ' + _.initial(names).join(', ') +
+	 *     (_.size(names) > 1 ? ', & ' : '') + _.last(names);
+	 * });
+	 *
+	 * say('hello', 'fred', 'barney', 'pebbles');
+	 * // => 'hello fred, barney, & pebbles'
+	 */
+	function restParam(func, start) {
+	  if (typeof func != 'function') {
+	    throw new TypeError(FUNC_ERROR_TEXT);
+	  }
+	  start = nativeMax(start === undefined ? (func.length - 1) : (+start || 0), 0);
+	  return function() {
+	    var args = arguments,
+	        index = -1,
+	        length = nativeMax(args.length - start, 0),
+	        rest = Array(length);
+
+	    while (++index < length) {
+	      rest[index] = args[start + index];
+	    }
+	    switch (start) {
+	      case 0: return func.call(this, rest);
+	      case 1: return func.call(this, args[0], rest);
+	      case 2: return func.call(this, args[0], args[1], rest);
+	    }
+	    var otherArgs = Array(start + 1);
+	    index = -1;
+	    while (++index < start) {
+	      otherArgs[index] = args[index];
+	    }
+	    otherArgs[start] = rest;
+	    return func.apply(this, otherArgs);
+	  };
+	}
+
+	module.exports = restParam;
+
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.fireEvent = exports.removeEvent = exports.addEvent = exports.hasEventListeners = undefined;
+
+	var _lodash = __webpack_require__(3);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var hasEventListeners = exports.hasEventListeners = !!window.addEventListener;
+
 	/**
 	 * @param  {DOM element} el - DOM element to add event to
 	 * @param  {string} e - Event to add
 	 * @param  {function} callback - Callback
 	 * @param  {boolean} capture - Whether to capture the event
 	 */
-	var addEvent = function addEvent(el, e, callback, capture) {
+	var addEvent = exports.addEvent = function addEvent(el, e, callback, capture) {
 	    if (hasEventListeners) {
 	        el.addEventListener(e, callback, !!capture);
 	    } else {
@@ -901,14 +2273,13 @@
 	    }
 	};
 
-	exports.addEvent = addEvent;
 	/**
 	 * @param  {DOM element} el - DOM element to add event to
 	 * @param  {string} e - Event to add
 	 * @param  {function} callback - Callback
 	 * @param  {boolean} capture - Whether to capture the event
 	 */
-	var removeEvent = function removeEvent(el, e, callback, capture) {
+	var removeEvent = exports.removeEvent = function removeEvent(el, e, callback, capture) {
 	    if (hasEventListeners) {
 	        el.removeEventListener(e, callback, !!capture);
 	    } else {
@@ -916,43 +2287,41 @@
 	    }
 	};
 
-	exports.removeEvent = removeEvent;
 	/**
 	 * @param  {DOM element} el - DOM element to fire event on
 	 * @param  {string} eventName - Event to fire
 	 * @param  {hash} data - Data to fire event with
 	 */
-	var fireEvent = function fireEvent(el, eventName, data) {
+	var fireEvent = exports.fireEvent = function fireEvent(el, eventName, data) {
 	    var ev = undefined;
 
 	    if (window.document.createEvent) {
 	        ev = window.document.createEvent('HTMLEvents');
 	        ev.initEvent(eventName, true, false);
-	        ev = (0, _utils.extend)(ev, data);
+	        ev = (0, _lodash2.default)(ev, data);
 	        el.dispatchEvent(ev);
 	    } else if (window.document.createEventObject) {
 	        ev = window.document.createEventObject();
-	        ev = (0, _utils.extend)(ev, data);
+	        ev = (0, _lodash2.default)(ev, data);
 	        el.fireEvent('on' + eventName, ev);
 	    }
 	};
-	exports.fireEvent = fireEvent;
 
 /***/ },
-/* 4 */
+/* 15 */
 /***/ function(module, exports) {
 
-	
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
 	/**
 	 * Trim whitespace from start or end of string
 	 * @param   {string} str - The string to trim
 	 * @returns {string}
 	 */
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	    value: true
-	});
 	var trim = function trim(str) {
 	    return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
 	};
@@ -963,57 +2332,58 @@
 	 * @param   {string} cn - The class to check for
 	 * @returns {boolean}
 	 */
-	var hasClass = function hasClass(el, cn) {
+	var hasClass = exports.hasClass = function hasClass(el, cn) {
 	    return (' ' + el.className + ' ').indexOf(' ' + cn + ' ') !== -1;
 	};
 
-	exports.hasClass = hasClass;
 	/**
 	 * Add a class to an element if it does not already exist
 	 * @param  {DOM element} el - The DOM element to add the class to
 	 * @param  {string} cn - The class to add
 	 */
-	var addClass = function addClass(el, cn) {
+	var addClass = exports.addClass = function addClass(el, cn) {
 	    if (!hasClass(el, cn)) {
 	        el.className = el.className === '' ? cn : el.className + ' ' + cn;
 	    }
 	};
 
-	exports.addClass = addClass;
 	/**
 	 * Remove a class from an element
 	 * @param  {DOM element} el - The DOM element to remove the class from
 	 * @param  {string} cn - The class to remove
 	 */
-	var removeClass = function removeClass(el, cn) {
+	var removeClass = exports.removeClass = function removeClass(el, cn) {
 	    el.className = trim((' ' + el.className + ' ').replace(' ' + cn + ' ', ' '));
 	};
-	exports.removeClass = removeClass;
 
 /***/ },
-/* 5 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.adjustCalendar = exports.compareDates = exports.setToStartOfDay = exports.getDaysInMonth = exports.isLeapYear = exports.isWeekend = undefined;
 
-	var _utils = __webpack_require__(2);
+	var _lodash = __webpack_require__(1);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
 	 * Returns true if date is a weekend day, false if not
 	 * @param  {date} date - Date to check
 	 * @return {boolean}
 	 */
-	var isWeekend = function isWeekend(date) {
+	var isWeekend = exports.isWeekend = function isWeekend(date) {
 	    var day = date.getDay();
 
 	    return day === 0 || day === 6;
 	};
 
-	exports.isWeekend = isWeekend;
 	/**
 	 * Returns true if year is a leap year, false if not
 	 * @param  {number} year - Year to check
@@ -1021,48 +2391,44 @@
 	 *
 	 * Solution by Matti Virkkunen: http://stackoverflow.com/a/4881951
 	 */
-	var isLeapYear = function isLeapYear(year) {
+	var isLeapYear = exports.isLeapYear = function isLeapYear(year) {
 	    return year % 4 === 0 && year % 100 !== 0 || year % 400 === 0;
 	};
 
-	exports.isLeapYear = isLeapYear;
 	/**
 	 * Returns the number of days in a month accounting for leap years
 	 * @param  {number} year - Year to return number of days for
 	 * @param  {number} month - Month to return number of days for
 	 * @return {number}
 	 */
-	var getDaysInMonth = function getDaysInMonth(year, month) {
+	var getDaysInMonth = exports.getDaysInMonth = function getDaysInMonth(year, month) {
 	    return [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
 	};
 
-	exports.getDaysInMonth = getDaysInMonth;
 	/**
 	 * Sets a date's time to 0, 0, 0, 0 for comparing dates
 	 * @param  {date} date - Date to set time on
 	 */
-	var setToStartOfDay = function setToStartOfDay(date) {
-	    if ((0, _utils.isDate)(date)) date.setHours(0, 0, 0, 0);
+	var setToStartOfDay = exports.setToStartOfDay = function setToStartOfDay(date) {
+	    if ((0, _lodash2.default)(date)) date.setHours(0, 0, 0, 0);
 	};
 
-	exports.setToStartOfDay = setToStartOfDay;
 	/**
 	 * Weak date comparison (use setToStartOfDay(date) to ensure correct result)
 	 * @param  {date} a - Date to compare
 	 * @param  {date} b - Date to compare
 	 * @return {boolean}
 	 */
-	var compareDates = function compareDates(a, b) {
+	var compareDates = exports.compareDates = function compareDates(a, b) {
 	    return a.getTime() === b.getTime();
 	};
 
-	exports.compareDates = compareDates;
 	/**
 	 * Month/year wrapping
 	 * @param  {object} - Calendar to adjust
 	 * @return {object}
 	 */
-	var adjustCalendar = function adjustCalendar(calendar) {
+	var adjustCalendar = exports.adjustCalendar = function adjustCalendar(calendar) {
 	    if (calendar.month < 0) {
 	        calendar.year -= Math.ceil(Math.abs(calendar.month) / 12);
 	        calendar.month += 12;
@@ -1073,19 +2439,23 @@
 	    }
 	    return calendar;
 	};
-	exports.adjustCalendar = adjustCalendar;
 
 /***/ },
-/* 6 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.renderTable = exports.renderTitle = exports.renderRow = exports.renderWeek = exports.renderDay = undefined;
 
-	var _utils = __webpack_require__(2);
+	var _lodash = __webpack_require__(2);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
 	 * Returns i18n day name, either abbreviated or full
@@ -1109,7 +2479,7 @@
 	 * @param  {object} opts - Options
 	 * @return {string}
 	 */
-	var renderDay = function renderDay(opts) {
+	var renderDay = exports.renderDay = function renderDay(opts) {
 	    if (opts.isEmpty) {
 	        return '<td class="is-empty"></td>';
 	    }
@@ -1143,7 +2513,6 @@
 	    return '\n        <td data-day="' + opts.day + '" class="' + arr.join(' ') + '">\n            <button class="pika-button pika-day"\n                    type="button"\n                    data-pika-year="' + opts.year + '"\n                    data-pika-month="' + opts.month + '"\n                    data-pika-day="' + opts.day + '">\n                ' + opts.day + '\n            </button>\n        </td>\n    ';
 	};
 
-	exports.renderDay = renderDay;
 	/**
 	 * Returns <td> HTML for a week cell
 	 * @param  {number}
@@ -1153,25 +2522,23 @@
 	 *
 	 * Lifted from http://javascript.about.com/library/blweekyear.htm
 	 */
-	var renderWeek = function renderWeek(d, m, y) {
+	var renderWeek = exports.renderWeek = function renderWeek(d, m, y) {
 	    var onejan = new Date(y, 0, 1),
 	        weekNum = Math.ceil(((new Date(y, m, d) - onejan) / 86400000 + onejan.getDay() + 1) / 7);
 
 	    return '\n        <td class="pika-week">\n            ' + weekNum + '\n        </td>\n    ';
 	};
 
-	exports.renderWeek = renderWeek;
 	/**
 	 * Returns <tr> HTML for a day cells
 	 * @param  {string[]} days - Array of day strings
 	 * @param  {boolean} isRTL - Is right to left
 	 * @return {string}
 	 */
-	var renderRow = function renderRow(days, isRTL) {
+	var renderRow = exports.renderRow = function renderRow(days, isRTL) {
 	    return '\n    <tr>\n        ' + (isRTL ? days.reverse() : days).join('') + '\n    </tr>\n';
 	};
 
-	exports.renderRow = renderRow;
 	/**
 	 * Returns the <thead> HTML for day names
 	 * @param  {object} opts - Options
@@ -1195,13 +2562,13 @@
 	/**
 	 * Returns HTML for the title with select labels for years and months
 	 * @param  {object} opts - Options
-	 * @param  {} c
-	 * @param  {number} year
+	 * @param  {number} nthCalendar - The nth calendar
+	 * @param  {number} year - The year
 	 * @param  {number} month
-	 * @param  {number} refYear
+	 * @param  {number} refYear - The year of the first calendar
 	 * @return {string}
 	 */
-	var renderTitle = function renderTitle(opts, c, year, month, refYear) {
+	var renderTitle = exports.renderTitle = function renderTitle(opts, nthCalendar, year, month, refYear) {
 	    var i = undefined,
 	        j = undefined,
 	        arr = undefined,
@@ -1214,12 +2581,12 @@
 	        next = true;
 
 	    for (arr = [], i = 0; i < 12; i++) {
-	        arr.push('\n            <option value="' + (year === refYear ? i - c : 12 + i - c) + '"\n                    ' + (i === month ? ' selected' : '') + '\n                    ' + (isMinYear && i < opts.minMonth || isMaxYear && i > opts.maxMonth ? 'disabled' : '') + '>\n                ' + opts.i18n.months[i] + '\n            </option>\n        ');
+	        arr.push('\n            <option value="' + (year === refYear ? i - nthCalendar : 12 + i - nthCalendar) + '"\n                    ' + (i === month ? ' selected' : '') + '\n                    ' + (isMinYear && i < opts.minMonth || isMaxYear && i > opts.maxMonth ? 'disabled' : '') + '>\n                ' + opts.i18n.months[i] + '\n            </option>\n        ');
 	    }
 
 	    monthHtml = '\n        <div class="pika-label">' + opts.i18n.months[month] + '\n            <select class="pika-select pika-select-month" tabindex="-1">\n                ' + arr.join('') + '\n            </select>\n        </div>\n    ';
 
-	    if ((0, _utils.isArray)(opts.yearRange)) {
+	    if ((0, _lodash2.default)(opts.yearRange)) {
 	        i = opts.yearRange[0];
 	        j = opts.yearRange[1] + 1;
 	    } else {
@@ -1249,28 +2616,26 @@
 	        next = false;
 	    }
 
-	    if (c === 0) {
+	    if (nthCalendar === 0) {
 	        html += '\n            <button class="pika-prev ' + (prev ? '' : ' is-disabled') + '" type="button">\n                ' + opts.i18n.previousMonth + '\n            </button>\n        ';
 	    }
 
-	    if (c === opts.numberOfMonths - 1) {
+	    if (nthCalendar === opts.numberOfMonths - 1) {
 	        html += '\n            <button class="pika-next ' + (next ? '' : ' is-disabled') + '" type="button">\n                ' + opts.i18n.nextMonth + '\n            </button>\n        ';
 	    }
 
 	    return html += '</div>';
 	};
 
-	exports.renderTitle = renderTitle;
 	/**
 	 * Returns <table> HTML with table rows
 	 * @param  {object} opts - Options
 	 * @param  {string[]} rows - Array of row HTML
 	 * @return {string}
 	 */
-	var renderTable = function renderTable(opts, rows) {
+	var renderTable = exports.renderTable = function renderTable(opts, rows) {
 	    return '\n    <table cellpadding="0" cellspacing="0" class="pika-table">\n        ' + renderHead(opts) + '\n        <tbody>\n            ' + rows.join('') + '\n        </tbody>\n    </table>\n';
 	};
-	exports.renderTable = renderTable;
 
 /***/ }
 /******/ ]);

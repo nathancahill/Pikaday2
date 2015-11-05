@@ -1,5 +1,5 @@
 
-import { isDate } from './utils'
+import isDate from 'lodash.isdate'
 
 /**
  * Returns true if date is a weekend day, false if not

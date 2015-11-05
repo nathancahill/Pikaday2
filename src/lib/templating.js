@@ -1,5 +1,5 @@
 
-import { isArray } from './utils'
+import isArray from 'lodash.isarray'
 
 /**
  * Returns i18n day name, either abbreviated or full

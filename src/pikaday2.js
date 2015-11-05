@@ -1,5 +1,8 @@
 
-import { isDate, isArray, extend } from './lib/utils'
+import isDate from 'lodash.isdate'
+import isArray from 'lodash.isarray'
+import assign from 'lodash.assign'
+
 import { addEvent, removeEvent, fireEvent, hasEventListeners } from './lib/events'
 import { addClass, removeClass, hasClass } from './lib/classutils'
 import { isWeekend, isLeapYear, getDaysInMonth, setToStartOfDay, compareDates, adjustCalendar } from './lib/dateutils'
@@ -31,22 +34,23 @@ class Pikaday2 {
             addEvent(opts.field, 'change', this._onInputChange);
 
             if (!opts.defaultDate) {
-                if (hasMoment && opts.field.value) {
-                    opts.defaultDate = moment(opts.field.value, opts.format).toDate();
-                } else {
-                    opts.defaultDate = new Date(Date.parse(opts.field.value));
+                if (opts.field.value) {
+                    if (hasMoment) {
+                        opts.defaultDate = moment(opts.field.value, opts.format).toDate();
+                    } else {
+                        opts.defaultDate = new Date(Date.parse(opts.field.value));
+                    }
+
+                    opts.setDefaultDate = true;
                 }
-                opts.setDefaultDate = true;
             }
         }
 
-        var defDate = opts.defaultDate;
-
-        if (isDate(defDate)) {
+        if (isDate(opts.defaultDate)) {
             if (opts.setDefaultDate) {
-                this.setDate(defDate, true);
+                this.setDate(opts.defaultDate, true);
             } else {
-                this.gotoDate(defDate);
+                this.gotoDate(opts.defaultDate);
             }
         } else {
             this.gotoDate(new Date());
@@ -68,10 +72,10 @@ class Pikaday2 {
 
     config = (options) => {
         if (!this.options) {
-            this.options = extend({}, Pikaday2.defaults, true)
+            this.options = assign({}, Pikaday2.defaults, true)
         }
 
-        let opts = extend(this.options, options, true);
+        let opts = assign(this.options, options, true);
 
         opts.isRTL = !!opts.isRTL;
 
@@ -752,4 +756,4 @@ Pikaday2.defaults = {
     onDraw: null
 };
 
-export default Pikaday2;
+module.exports = Pikaday2;

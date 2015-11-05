@@ -1,10 +1,10 @@
+
+webpack = require('webpack')
+
 module.exports = {
     entry: "./src/pikaday2.js",
     module: {
         loaders: [{
-            test: /pikaday2\.js$/,
-            loader: 'expose?Pikaday2',
-        }, {
             test: /\.js$/,
             exclude: /node_modules/,
             loader: "babel-loader"
@@ -12,6 +12,8 @@ module.exports = {
     },
     output: {
         path: './dist/',
-        filename: "pikaday2.js"
-    },
+        filename: 'pikaday2.js',
+        libraryTarget: 'var',
+        library: 'Pikaday2'
+    }
 };
